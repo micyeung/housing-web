@@ -1,0 +1,85 @@
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../bower_components/paper-card/paper-card.html"/>
+<link rel="import" href="../bower_components/paper-button/paper-button.html"/>
+<link rel="import" href="./two-columns-grid.html">
+<link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
+
+
+<dom-module id="my-new-view">
+    <!-- Defines element's style and local DOM'-->
+    <template>
+        <style include="app-grid-style">
+            :host {
+                --app-grid-columns: 2;
+                --app-grid-gutter: 16px;	
+                display: block;
+                padding: 16px;
+            }
+     
+            @media (max-width: 800px) {
+                :host {
+                    --app-grid-columns: 1;
+                }
+            }
+            
+            ul {
+                padding: 0;
+                list-style: none;
+            }
+
+            paper-button {
+                color:darkorange; 
+                font-size: 15px;
+            }
+        </style>
+        <h1>All House Listings</h1>
+        <!--<two-columns-grid column-width="346" gutter="4">-->
+        <ul class="app-grid">
+            <template is="dom-repeat" items="{{houses}}">
+                <li>
+                <!-- Need to fix the placeholder image --> 
+                <paper-card heading="{{item.houseTitle}}" preload-image placeholder-image="../images/placeholder.png" image="http://placehold.it/350x150/FFC107/000000" alt="Emmental">
+                    <div class="card-content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </div>
+                    <div class="card-actions">
+                        <paper-button>Contact</paper-button>
+                    </div>
+                </paper-card>
+                </li>
+            </template>
+        </ul>
+        <!--</two-columns-grid>-->
+    </template>
+    <!-- Creates the element's prototype and registers it -->
+    <script>
+        Polymer({
+            is: 'my-new-view',
+            properties: {
+                houseTitle: String,
+            },
+
+            ready:function() {
+                this.houses = [
+                    {houseTitle: 'A'},
+                    {houseTitle: 'B'},
+                    {houseTitle: 'C'},
+                    {houseTitle: 'D'},
+                    {houseTitle: 'E'},
+                    {houseTitle: 'F'}
+                ];
+            },
+            
+            attached: function() {
+                this._updateGridStyles = this._updateGridStyles || function() {
+                    this.updateStyles();
+                }.bind(this);
+                window.addEventListener('resize', this._updateGridStyles);
+            },
+
+            detached: function() {
+                window.removeEventListener('resize', this._updateGridStyles);
+            }
+        });
+    </script>
+</dom-module>
